@@ -3,8 +3,15 @@ package com.example.stopwatch
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.Chronometer
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var startStopButton: Button
+    private lateinit var resetButton: Button
+    private lateinit var timer: Chronometer
+    var isRunning = false
 
     //make a classwide static constant in Kotlin
     companion object {
@@ -16,6 +23,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.d(TAG, "onCreate:")
+        wireWidgets()
+
+        startStopButton.setOnClickListener {
+            if(isRunning == false) {
+                startStopButton.setText("STOP")
+                isRunning = true
+            }
+            else {
+                startStopButton.setText("START")
+                isRunning = false
+            }
+        }
+
     }
 
     override fun onStart() {
@@ -46,5 +66,11 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy:")
+    }
+
+    private fun wireWidgets() {
+        startStopButton = findViewById(R.id.button_main_start)
+        resetButton = findViewById(R.id.button_main_start)
+        timer = findViewById(R.id.chronometer_main_stopwatch)
     }
 }
