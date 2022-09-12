@@ -29,13 +29,24 @@ class MainActivity : AppCompatActivity() {
             if(isRunning == false) {
                 startStopButton.setText("STOP")
                 isRunning = true
+                editTimer()
             }
             else {
                 startStopButton.setText("START")
                 isRunning = false
+                editTimer()
             }
         }
 
+    }
+
+    private fun editTimer() {
+        if(isRunning) {
+            timer.start()
+        }
+        else {
+            timer.stop()
+        }
     }
 
     override fun onStart() {
