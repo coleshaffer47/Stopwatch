@@ -1,7 +1,9 @@
 package com.example.stopwatch
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.widget.Button
 import android.widget.Chronometer
@@ -12,6 +14,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var resetButton: Button
     private lateinit var timer: Chronometer
     var isRunning = false
+    var timerBase = SystemClock.elapsedRealtime()
+    var timerStopped = SystemClock.elapsedRealtime()
+    var timerResumed = SystemClock.elapsedRealtime()
 
     //make a classwide static constant in Kotlin
     companion object {
@@ -24,15 +29,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.d(TAG, "onCreate:")
         wireWidgets()
+        startStopButton.setBackgroundColor(Color.rgb(63, 176, 73))
 
         startStopButton.setOnClickListener {
             if(isRunning == false) {
+                //STARTING TIMER
+                timerResumed = SystemClock.elapsedRealtime()
+                timerBase = timerResumed - (timerStopped - timerBase)
+                timer.base = timerBase
                 startStopButton.setText("STOP")
                 isRunning = true
                 editTimer()
             }
             else {
-                startStopButton.setText("START")
+                //STOPPING TIMER
+                timerStopped = SystemClock.elapsedRealtime()
+                startStopButton.setText("RESUME")
                 isRunning = false
                 editTimer()
             }
@@ -43,9 +55,11 @@ class MainActivity : AppCompatActivity() {
     private fun editTimer() {
         if(isRunning) {
             timer.start()
+            startStopButton.setBackgroundColor(Color.rgb(252, 70, 45))
         }
         else {
             timer.stop()
+            startStopButton.setBackgroundColor(Color.rgb(63, 176, 73))
         }
     }
 
