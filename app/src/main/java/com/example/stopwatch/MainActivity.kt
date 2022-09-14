@@ -30,6 +30,19 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate:")
         wireWidgets()
         startStopButton.setBackgroundColor(Color.rgb(63, 176, 73))
+        resetButton.setBackgroundColor(Color.rgb(196, 97, 242))
+
+        resetButton.setOnClickListener {
+            //RESET TIMER, RESET OTHER BUTTON
+            timerBase = 0
+            timerStopped = 0
+            timerResumed = 0
+            timer.base = SystemClock.elapsedRealtime()
+            timer.stop()
+            startStopButton.setBackgroundColor(Color.rgb(63, 176, 73))
+            startStopButton.setText("START")
+            isRunning = false
+        }
 
         startStopButton.setOnClickListener {
             if(isRunning == false) {
@@ -95,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun wireWidgets() {
         startStopButton = findViewById(R.id.button_main_start)
-        resetButton = findViewById(R.id.button_main_start)
+        resetButton = findViewById(R.id.button_main_reset)
         timer = findViewById(R.id.chronometer_main_stopwatch)
     }
 }
